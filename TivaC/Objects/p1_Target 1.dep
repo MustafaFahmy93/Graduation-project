@@ -1,0 +1,17 @@
+Dependencies for Project 'p1', Target 'Target 1': (DO NOT MODIFY !)
+F (.\driverlib.lib)(0x4C613F9A)()
+F (F:\Keil_v5\TM4C123Valvanoware\Lab1_4C123\RTE\Device\TM4C123GH6PM\startup_TM4C123.s)(0x5AB50962)(--cpu Cortex-M4 --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Target_1-IF:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-IF:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 524" --pd "TM4C123GH6PM SETA 1"--list .\listings\startup_tm4c123.lst --xref -o .\objects\startup_tm4c123.o --depend .\objects\startup_tm4c123.d)
+F (.\main.c)(0x5ABE3955)(--c99 -c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars-I.\RTE\_Target_1-IF:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-IF:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DTM4C123GH6PM-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (F:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588BD7A4)
+I (F:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x588BD7A4)
+I (Init.h)(0x5AA90CA6)
+I (tm4c123gh6pm.h)(0x5AA8E001)
+I (MACROS.h)(0x5AA2E89B)
+I (Data_Types.h)(0x5AA28433)
+I (sysctl.h)(0x5AA8ECD4)
+F (.\Init.c)(0x5ABE3957)(--c99 -c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections --signed_chars-I.\RTE\_Target_1-IF:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-IF:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="524" -DTM4C123GH6PM-o .\objects\init.o --omf_browse .\objects\init.crf --depend .\objects\init.d)
+I (Init.h)(0x5AA90CA6)
+I (F:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588BD7A4)
+I (tm4c123gh6pm.h)(0x5AA8E001)
+I (MACROS.h)(0x5AA2E89B)
+I (Data_Types.h)(0x5AA28433)
