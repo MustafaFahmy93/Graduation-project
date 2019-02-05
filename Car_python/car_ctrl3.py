@@ -35,25 +35,26 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(inA2,GPIO.OUT)
 p2=GPIO.PWM(inA2,100)
 p2.start(0)
-
+flag = 0
+inc = 60
 #motor B(0.9ms-2.1ms) (50Hz-period=>20ms
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(inB,GPIO.OUT)
 p3=GPIO.PWM(inB,50)
 p3.start(7.5) #(0 degree)
 p3.ChangeDutyCycle(7.5)
-time.sleep(1)
+time.sleep(0.5)
 p3.ChangeDutyCycle(0)
 def position(angel,speed_dc) : 
         x=(angel*1.2/120.0)+0.9
         var=(x/20)*100
-        #if speed_dc>0:
-         #   forward(speed_dc)
+        if speed_dc>0:
+           forward(speed_dc)
         p3.ChangeDutyCycle(var)
-        time.sleep(1)
-        p3.ChangeDutyCycle(0)
-        time.sleep(0.5)
-        print(var)
+        time.sleep(0.001)
+        #p3.ChangeDutyCycle(0)
+        #time.sleep(0.25)
+        #print(var)
         
         
 def forward(dc):
@@ -63,15 +64,30 @@ def forward(dc):
 def backward(dc):
 #    print("b")
     position(60, 0)
+    global inc
+    inc = 60
     p1.ChangeDutyCycle(0)
     p2.ChangeDutyCycle(dc)    
+
+
+#def increment () :
+#    global flag
+#    global inc
+#    print (flag)
+#    while(flag):
+#        with keyboard.Listener(on_release=on_release) as listener:      
+#            listener.join()
+#        if inc<120 :
+#            inc = inc + 5
+#            print(inc)
+#        position(inc,dc)
 
 #def listen_key_Thread():
 def on_press(key):
     global dc,t1,thread
     global action
     if(key == keyboard.Key.up or key == keyboard.KeyCode(char='w')):
-        position(60,dc)
+        forward(dc)
         print("forward")
         action="60"
     if(key == keyboard.Key.down or key == keyboard.KeyCode(char='s')):
@@ -79,11 +95,20 @@ def on_press(key):
         print("backward")
         action="60"
     if(key == keyboard.Key.right or key == keyboard.KeyCode(char='d')):
-        position(120,dc)
+        global flag
+        global inc 
+        flag=1
+        if inc<120:
+            inc = inc + 5
+        print (flag)
+        position(inc, dc)
         print("right")
         action="120"
     if(key == keyboard.Key.left or key == keyboard.KeyCode(char='a')):
-        position(0,dc)
+        global inc 
+        if inc > 0:
+            inc = inc - 5
+        position(inc,dc)
         print("left")
         action="0"
     if(key == keyboard.KeyCode(char='h')):
@@ -96,7 +121,8 @@ def on_press(key):
         print(dc)
     if(key == keyboard.KeyCode(char='b')):
         print ("stop")
-        position(60,dc)
+        p3.ChangeDutyCycle(7.5)
+        time.sleep(0.5)
         p1.stop()
         p2.stop()
         p3.stop()
@@ -105,6 +131,8 @@ def on_press(key):
         exit(0)
 
 def on_release(key):
+    global flag
+    flag = 0
     if(key == keyboard.Key.up or key == keyboard.KeyCode(char='w')):
         print("up stop")
 #            stop()
