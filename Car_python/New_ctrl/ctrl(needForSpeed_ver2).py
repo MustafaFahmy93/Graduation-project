@@ -30,7 +30,6 @@ def camThread():
     count_file.close()
     for i in range(10000):
         cam(action,count)
-        print(count)
         count+=1
         if(action=="end"):
             end_cam()
@@ -41,25 +40,26 @@ def listen_key_Thread():
     def on_press(key):
         global flag_up,flag_right,flag_left
         global dc,action,count,inc
+        print(action)
         if((key == keyboard.Key.up or key == keyboard.KeyCode(char='w')) and flag_right==0 and flag_left==0):
             flag_up=1
             forward(dc)
             inc=60
             position(60)
-            action("0")
+            action="0"
         elif(key == keyboard.Key.down or key == keyboard.KeyCode(char='s')):
             backward(dc)
             inc=60
             position(60)
-            action("0")
+            action="0"
         elif((key == keyboard.Key.right or key == keyboard.KeyCode(char='d'))and flag_up==0):
             flag_right=1
             inc_right()
-            action(str(inc-60))
+            action=(str(inc-60))
         elif((key == keyboard.Key.left or key == keyboard.KeyCode(char='a'))and flag_up==0):
             flag_left=1
             inc_left()
-            action(str(inc-60))
+            action=(str(inc-60))
         elif(key == keyboard.KeyCode(char='h')):
             if(dc!=100):
                 dc=(dc+10)%110
@@ -81,11 +81,11 @@ def listen_key_Thread():
         if((key == keyboard.Key.right and flag_up==1)or(key == keyboard.Key.up and flag_right==1)):
             forward(dc)
             inc_right()
-            action(str(inc-60))
+            action=(str(inc-60))
         elif((key == keyboard.Key.left and flag_up==1)or(key == keyboard.Key.up and flag_left==1)):
             forward(dc)
             inc_left()
-            action(str(inc-60))
+            action=(str(inc-60))
 #============================on_release=============================
     def on_release(key):
         global flag_up,flag_right,flag_left
@@ -110,4 +110,3 @@ t2 = threading.Thread(target=listen_key_Thread, args=[])
 
 t2.start()
 t1.start()
-
