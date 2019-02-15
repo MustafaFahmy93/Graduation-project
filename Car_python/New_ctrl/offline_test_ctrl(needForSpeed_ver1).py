@@ -20,15 +20,10 @@ def on_press(key):
         print ("bye bye")
         exit(0)
 #================================(up_right & up_left)======================
-    if(key == keyboard.Key.right and flag_up==1):
+    if((key == keyboard.Key.right and flag_up==1)or(key == keyboard.Key.up and flag_right==1)):
         print("up right")
-    elif(key == keyboard.Key.left and flag_up==1):
+    elif((key == keyboard.Key.left and flag_up==1)or(key == keyboard.Key.up and flag_left==1)):
         print("up left")
-    elif(key == keyboard.Key.up and flag_right==1):
-        print("up right")
-    elif(key == keyboard.Key.up and flag_left==1):
-        print("up left")
-
 
 
 def on_release(key):
