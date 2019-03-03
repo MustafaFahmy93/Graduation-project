@@ -9,7 +9,7 @@ import threading
 #init()
 thread = []
 dc=100
-action="60"  
+action ="60"
 #def camThread():
 #    global action
 #    count= 2765
@@ -21,10 +21,10 @@ action="60"
 #            end_cam()
 #            t1.do_run = False
 #            break
-inA1 = 12 #12 motor A in1
-inA2 = 15 #15 motor A in2
+inA1 = 12  #12 motor A in1
+inA2 = 15  #15 motor A in2
 
-inB = 16 #16 motor B  servo
+inB = 16  #16 motor B  servo
 #    motor A
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(inA1,GPIO.OUT)
