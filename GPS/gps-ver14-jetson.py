@@ -11,47 +11,14 @@ from pynput import keyboard
 import threading
 import gps
 #import QMCcompass
-#from compass import *
-#from hmc5883l import *
+from compass import *
 from ctrl import *
-from firebase import Firebase
-
-
-#GPS_lat = db.child("GPS").child("lat").get().val()
-#GPS_long = db.child("GPS").child("long").get().val()
-
-#Compass_head = db.child("Compass").child("head").get().val()
-#Compass_x = db.child("Compass").child("x").get().val()
-#Compass_y = db.child("Compass").child("y").get().val()
-#Compass_z = db.child("Compass").child("z").get().val()
-
-#print(GPS_lat,GPS_long)
-#print(Compass_head,Compass_x,Compass_y,Compass_z)
+#sensor = QMCcompass.QMC5883L()
 thread = []
 interrupt = False
 end_app = False
-angle_global=0
-position_global=0
+
 ##############################functions##########################
-def compass():
-    global angle_global
-    global position_global
-    config = {
-        "apiKey": "AIzaSyDZQENVi3p5rZZwC8YaA4tfeB8kFo9bLgA",
-        "authDomain": "igp-sensors-readings.firebaseapp.com",
-        "databaseURL": "https://igp-sensors-readings.firebaseio.com",
-        "projectId": "igp-sensors-readings",
-        "storageBucket": "igp-sensors-readings.appspot.com",
-        "messagingSenderId": "699634168979",
-        "appId": "1:699634168979:web:df476c33c6f57180"
-      }
-
-    firebase = Firebase(config)
-
-    db = firebase.database()
-    while(end_app==False):
-        angle_global= db.child("Compass").child("head").get().val()
-	
 def gpsThread():
     def find_shortest_path(graph, start, end, path=[]):
         path = path + [start]
@@ -118,7 +85,7 @@ def gpsThread():
 
     ################################__main__##########################
     def main():
-        global interrupt, end_app,angle_global,position_global
+        global interrupt, end_app
         # load map
         graph = co.graph
         coordinates = co.coordinates
@@ -131,17 +98,12 @@ def gpsThread():
         #print("here")
         while current_position == None:
             current_position = gps.gps_lat_lon()  # [30.064091, 31.279413]
-        #while compass() == None:
-         #   x=0
-            #current_position = gps.gps_lat_lon()  # [30.064091, 31.279413]
+        while compass() == None:
+            current_position = gps.gps_lat_lon()  # [30.064091, 31.279413]
 
         candidate_nodes = nearest_nodes(current_position, graph, coordinates)
         start = candidate_nodes[0]
-        goal_state = 'Z'
-        gps_file=open("gps.txt",'a+')
-        compass_file=open("compass.txt",'a+')
-        gps_file.write(goal_state+"\n")
-        compass_file.write(goal_state+"\n")
+        goal_state = 'H'
         if (total_distance(current_position, find_shortest_path(graph, candidate_nodes[0], goal_state),
                            coordinates) > total_distance(current_position,
                                                          find_shortest_path(graph, candidate_nodes[1], goal_state), coordinates)):
@@ -150,19 +112,16 @@ def gpsThread():
         print(path)
         i = 0
         count_next=0
-        dc = 0.6
-
+        dc = 0.4
         while (True):
         #    time.sleep(0.5)
             
             current_position = gps.gps_lat_lon()  # [30.064091, 31.279413]##from gps module
-
-            current_angle =angle_global#compass()
+            current_angle = compass()
             if current_position == None or current_angle == None:
                 #stop()
                 continue
-            gps_file.write(str(current_position[0])+","+str(current_position[1])+"\n")
-            compass_file.write(str(current_angle)+"\n")
+            
             des_angle = angleBtn2Coordinates(current_position, coordinates[path[i]])
             print("distance=> " + path[i] + "(" + str(distance(current_position, coordinates[path[i]])) + ")")
             print("not "+str(des_angle))
@@ -179,26 +138,26 @@ def gpsThread():
             elif (req_angle < -60):
                 req_angle = -60
             if (interrupt == False):
-                # print("au11111111topilot")
+                # print("autopilot")
                 print("angle_servo=> " + str(req_angle))
                 # servo(req_angle)
                 position(req_angle)
                 # motors(forword)
                 forward(dc)
-                time.sleep(0.5)
-                stop()
+                #time.sleep(0.2)
+                #stop()
             if (end_app):
                 stop()
                 print("break")
                 break
 
             if (distance(current_position, coordinates[path[i]]) > 3):
-                dc = 1
+                dc = 0.4
                 # print("high speed")
             elif ((distance(current_position, coordinates[path[i]]) < 3) and (i + 1 < len(path))):
                 count_next+=1
                 if(count_next==3):
-                    dc = 0.8 
+                    dc = 0.3 
                     print(path[i:])
                     i += 1  # next state
                     count_next=0
@@ -207,12 +166,9 @@ def gpsThread():
                 count_next+=1
                 if(count_next==3):
                     print("Congratulations!")
-                    stop()
                     break
-
-        gps_file.close()
-        compass_file.close()
         exit(0)
+
 
     #            break
 
@@ -280,6 +236,3 @@ t2 = threading.Thread(target=listen_key_Thread, args=[])
 
 t2.start()
 t1.start()
-t3 = threading.Thread(target=compass, args=[])
-
-t3.start()
