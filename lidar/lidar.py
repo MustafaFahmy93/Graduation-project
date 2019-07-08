@@ -1,4 +1,5 @@
 from rplidar import RPLidar
+import time
 
 #function to map the pixels of the object to the angle of the object
 def mapping_pix2angle(min_pixel, max_pixel):
@@ -82,11 +83,15 @@ def object_depth(min,max) :
 
 
 
+start = time.clock()
 
 
 
 x = object_depth(240, 600)
+end = time.clock ()
+
 print(x)
+print(end-start)
 
 
 
