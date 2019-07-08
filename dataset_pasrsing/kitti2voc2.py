@@ -135,13 +135,7 @@ def make_voc_directories(voc):
     Returns: None
     """
     if os.path.exists(voc):
-        # if python_version == 3:
-        #     prompt = input('Directory already exists. Overwrite? (yes, no): ')
-        # else:
-        #     prompt = raw_input('Directory already exists. Overwrite? (yes, no): ')
-        # if prompt == 'no':
-        #     exit(0)
-        shutil.rmtree(voc)
+       shutil.rmtree(voc)
     os.makedirs(voc)
     os.makedirs(voc + "train")
     os.makedirs(voc + "train/images")
