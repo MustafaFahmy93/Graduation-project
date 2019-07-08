@@ -6,32 +6,10 @@ import threading
 thread = []
 dc=int(0.5*4096)
 
-##action="0"  
-##count = 7
-##count_file = open ('count.txt',"r")
+
 end=False
 
-def camThread():
-    print("cam")
-##    global action,count,end
-##    camera = PiCamera()
-##    camera.resolution = (455, 256)
-##    camera.framerate = 32
-##    count_file = open("count.txt","r")
-##    count=int(count_file.read())+1
-##    print(count)
-##    imgCount=count
-##    count_file.close()
-##    f = open("out.txt", "a+")
-##    start = time.time()
-##    while(not end):
-##        camera.capture('%s.jpg' % count,use_video_port = False)
-##        f.write('%s.jpg %s\n' % (count,action))
-##        count+=1
-##    f.close()
-##    duration = time.time() - start
-##    print("Captured: "+ str(count-imgCount))
-##    print("Duration: " + str(duration))
+
     
 inA1 = 0 # motor A in1
 inA2 = 1 # motor A in2
@@ -145,12 +123,10 @@ def listen_key_Thread():
         
    
     
-##t1 = threading.Thread(target=camThread, args=[])
 t2 = threading.Thread(target=listen_key_Thread, args=[])
 t3 = threading.Thread(target=servo_Thread, args=[])
 t2.start()
 t3.start()
-##t1.start()
 
 
 
